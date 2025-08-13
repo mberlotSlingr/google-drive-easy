@@ -1,0 +1,64 @@
+const { google } = require('googleapis');
+const fs = require('fs');
+require('dotenv').config();
+
+const drive = google.drive('v3');
+
+async function authenticate() {
+  const auth = new google.auth.GoogleAuth({
+    credentials:{
+      private_key: process.env.GOOGLE_PRIVATE_KEY.replace(/\\n/g, '\n'),
+      client_email: process.env.GOOGLE_CLIENT_EMAIL,
+    },
+    projectId: process.env.GOOGLE_PROJECT_ID,
+    // Scopes define the level of access to the API
+    scopes: ['https://www.googleapis.com/auth/drive'],
+  });
+  
+  const authClient = await auth.getClient();
+  google.options({ auth: authClient });
+  return authClient;
+}
+
+// List files in Google Drive
+async function getFileInSharedFolder(folderId) {
+  try {
+    await authenticate();
+    const res = await drive.files.list({
+      pageSize: 10,
+      fields: 'nextPageToken, files(id, name)',
+      q: `'${folderId}' in parents`
+    });
+
+    const content = [];
+    const files = res.data.files;
+    if (files.length) {
+      files.forEach((file) => {
+        content.push({ id: file.id, name: file.name });
+      });
+    }
+    return content;
+  } catch (err) {
+    console.error('The API returned an error:', err);
+  }
+}
+
+async function downloadFile(fileId, fileName) {
+  try {
+    await authenticate();
+
+    const res = await drive.files.get({
+      fileId: fileId,
+      alt: 'media',
+    }, { responseType: 'stream' });
+
+    res.data
+      .on('end', async () => {
+        let fileInfo = await svc.files.upload(fileName, res.data);
+        return fileInfo;
+    })
+      .on('error', err => console.error('Error downloading file', err));
+  } catch (err) {
+    console.error('Download error:', err);
+  }
+}

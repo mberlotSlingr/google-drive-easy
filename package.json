@@ -1,0 +1,29 @@
+{
+  "name": "google-drive-easy",
+  "version": "1.0.0",
+  "description": "Slingr Service to interact with Google Drive",
+  "main": "appService.js",
+  "scripts": {
+    "start": "node appService.js",
+    "startDev": "nodemon appService.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Mati Berlot <mberlot@slingr.io>",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/slingr-stack/lims-importer"
+  },
+  "keywords": [
+    "slingr",
+    "google drive",
+    "services"
+  ],
+  "dependencies": {
+    "@slingr/slingr-services": "^0.0.8",
+    "adm-zip": "^0.5.14",
+    "googleapis": "^155.0.1"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.4"
+  }
+}
