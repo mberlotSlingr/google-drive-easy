@@ -1,103 +1,64 @@
-<table class="table" style="margin-top: 10px">
-    <thead>
-    <tr>
-        <th>Title</th>
-        <th>Last Updated</th>
-        <th>Summary</th>
-    </tr>
-    </thead>
-    <tbody>
-    <tr>
-        <td>ZIP Service</td>
-        <td>August 1, 2024</td>
-        <td>Allows zip and unzip files</td>
-    </tr>
-    </tbody>
-</table>
+# Google Drive Easy
 
-# Overview
+A simple Node.js library for interacting with Google Drive, making file uploads, downloads, and management easy.
 
-The Zip service provides functionality for compressing and decompressing files
-into and from the ZIP archive format.
+## Features
 
-# Javascript API
+- Upload and download files to/from Google Drive
+- List, create, and delete files and folders
+- Simple authentication with OAuth2
+- Minimal dependencies and easy setup
 
-## Zip Files
+## Installation
 
-- `svc.parser.getFileContent`
-
-```js
-let files = [];
-let cursor = sys.data.find('files');
-while (cursor.hasNext()) {
-  let record = cursor.next();
-  files.push({
-    fileId: record.field('file').id(),
-    fileName: record.field('file').name(),
-  })
-}
-
-let callback = function (res, resData) {
-  if (res.data.ok) {
-    sys.logs.info(`parse completed ${res.data.file.fileId}]`, { res, resData });
-  } else {
-    sys.logs.warn(`Error parsing files`, { res, resData });
-  }
-}
-
-let callbacks = {
-  onParseComplete: callback,
-}
-
-let resData = {
-  test: true,
-};
-
-const fileName = 'myZip.zip';
-svc.zip.zipFiles({ files, fileName: fileName }, resData, callbacks);
+```bash
+npm install google-drive-easy
 ```
 
-## Unzip file
-
-- `svc.zip.unzipFile`
+## Usage
 
 ```js
-let fileId = '66abfba84e4c911940bba9d0';
+const { GoogleDriveEasy } = require('google-drive-easy');
 
-let callback = function (res, resData) {
-  if (res.data.ok) {
-    sys.logs.info(`Unzip completed`, { res, resData });
-    let { files } = res.data;
-    sys.logs.info(`Unzip completed ${files.length}]`, { res, resData });
-  } else {
-    sys.logs.warn(`Error unzipping file`, { res, resData });
-  }
-}
+const drive = new GoogleDriveEasy({
+  clientId: 'YOUR_CLIENT_ID',
+  clientSecret: 'YOUR_CLIENT_SECRET',
+  redirectUri: 'YOUR_REDIRECT_URI',
+});
 
-let callbacks = {
-  onUnzipComplete: callback,
-}
+// Authenticate and get tokens
+await drive.authenticate();
 
-let resData = {
-  test: true,
-};
+// Upload a file
+await drive.uploadFile('local/path/to/file.txt', 'drive-folder-id');
 
-// Optional
-let options = {
-  recursive: false,
-  password: null, // If zip is password protected
-}
-
-svc.zip.unzipFile({ fileId: fileId, options: options }, resData, callbacks);
+// Download a file
+await drive.downloadFile('drive-file-id', 'local/path/to/save.txt');
 ```
 
-# About SLINGR
+## Authentication
 
-SLINGR is a low-code rapid application development platform that accelerates development,
-with robust architecture for integrations and executing custom workflows and automation.
+1. Create a project in [Google Cloud Console](https://console.cloud.google.com/).
+2. Enable the Google Drive API.
+3. Create OAuth2 credentials and download the `client_id` and `client_secret`.
+4. Use these credentials in your code as shown above.
 
-[More info about SLINGR](https://slingr.io)
+## API Reference
 
-# License
+- `authenticate()`: Prompts for authentication and stores tokens.
+- `uploadFile(localPath, folderId)`: Uploads a file to a folder.
+- `downloadFile(fileId, localPath)`: Downloads a file by ID.
+- `listFiles(folderId)`: Lists files in a folder.
+- `deleteFile(fileId)`: Deletes a file by ID.
 
-This package is licensed under the Apache License 2.0. See the `LICENSE` file for more details.
+## License
+
+MIT
+
+## Contributing
+
+Pull requests are welcome! For major changes, please open an issue first to discuss what you would like to change.
+
+## Disclaimer
+
+This project is not affiliated with Google. Use at your own risk.
