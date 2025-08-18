@@ -24,11 +24,14 @@ async function authenticate() {
 async function getFileInSharedFolder(folderId) {
   try {
     await authenticate();
-    const res = await drive.files.list({
+    let params = {
       pageSize: 10,
       fields: 'nextPageToken, files(id, name)',
-      q: `'${folderId}' in parents`
-    });
+    };
+    if(folderId){
+        params.q = `'${folderId}' in parents`;
+    }
+    const res = await drive.files.list();
 
     const content = [];
     const files = res.data.files;
@@ -62,3 +65,8 @@ async function downloadFile(fileId, fileName) {
     console.error('Download error:', err);
   }
 }
+
+module.exports = {
+    getFileInSharedFolder,
+    downloadFile,
+};
