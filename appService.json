@@ -1,61 +1,78 @@
 {
-    "label": "google-drive-easy",
-    "name": "google-drive-easy",
-    "apiVersion": "v1",
-    "internal": false,
-    "configurationType": "GLOBAL",
-    "deployment": {
-        "jsService": true,
-        "profiles":[
-            {
-                "name": "small",
-                "label": "Small",
-                "memory": 128,
-                "description": "Small Memory Allocation"
-            },
-            {
-                "name": "default",
-                "label": "Default",
-                "memory": 256,
-                "description": "Default Memory Allocation"
-            },
-            {
-                "name": "medium",
-                "label": "Medium",
-                "memory": 512,
-                "description": "Medium Memory Allocation"
-            },
-            {
-                "name": "big",
-                "label": "Big",
-                "memory": 1024,
-                "description": "Big Memory Allocation"
-            }
-        ],
-        "allowMultipleInstances": false
+"label": "google-drive-easy",
+"name": "google-drive-easy",
+"apiVersion": "v1",
+"internal": false,
+"configurationType": "GLOBAL",
+"deployment": {
+    "jsService": true,
+    "profiles":[
+        {
+            "name": "small",
+            "label": "Small",
+            "memory": 128,
+            "description": "Small Memory Allocation"
+        },
+        {
+            "name": "default",
+            "label": "Default",
+            "memory": 256,
+            "description": "Default Memory Allocation"
+        },
+        {
+            "name": "medium",
+            "label": "Medium",
+            "memory": 512,
+            "description": "Medium Memory Allocation"
+        },
+        {
+            "name": "big",
+            "label": "Big",
+            "memory": 1024,
+            "description": "Big Memory Allocation"
+        }
+    ],
+    "allowMultipleInstances": false
+},
+"status": "ACTIVE",
+"stores": [],
+"events": [
+    {
+        "label": "On files list completed",
+        "name": "onFilesListComplete",
+        "description": "Callback event for when the files list has been retrieved"
     },
-    "status": "ACTIVE",
-    "stores": [],
-    "events": [
-        {
-            "label": "On files list completed",
-            "name": "onFilesListComplete",
-            "description": "Callback event for when the files list has been retrieved"
-        }
-    ],
-    "functions": [
-        {
-            "label": "get shared folder files list",
-            "name": "getFilesInSharedFolder",
-            "description": "The service receives a folder ID and returns the list of files in the shared folder",
-            "callbacks": [
-                {
-                    "name": "onFilesListComplete",
-                    "maxWaitingTime": 120000,
-                    "maxExpectedResponses": 1
-                }
-            ]
-        }
-    ],
-    "configuration":[]
+    {
+        "label": "On File Download Complete",
+        "name": "onFileDownloadComplete",
+        "description": "Callback event for when the file has been downloaded"
+    }
+],
+"functions": [
+    {
+        "label": "get shared folder files list",
+        "name": "getFilesInSharedFolder",
+        "description": "The service receives a folder ID and returns the list of files in the shared folder",
+        "callbacks": [
+            {
+                "name": "onFilesListComplete",
+                "maxWaitingTime": 120000,
+                "maxExpectedResponses": 1
+            }
+        ]
+    },
+    {
+        "label": "download file info",
+        "name": "downloadFile",
+        "description": "The service receives a folder ID and returns the list of files in the shared folder",
+        "callbacks": [
+            {
+                "name": "onFileDownloadComplete",
+                "maxWaitingTime": 120000,
+                "maxExpectedResponses": 1
+            }
+        ]
+    }
+],
+"configuration":[]
 }
