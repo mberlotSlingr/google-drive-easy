@@ -1,5 +1,5 @@
 const svc = require('@slingr/slingr-services');
-const { getFileInSharedFolder } = require('./google-drive-easy.js');
+const { getFilesInSharedFolder } = require('./google-drive-easy.js');
 
 svc.hooks.onSvcStart = () => {
     svc.logger.info('Google Drive Easy Service has started');
@@ -9,18 +9,18 @@ svc.hooks.onSvcStop = (cause) => {
     svc.logger.info('Google Drive Easy Service is stopping.');
 }
 
-svc.functions.getFileInSharedFolder = ({ params, id }) => {
+svc.functions.getFilesInSharedFolder = ({ params, id }) => {
     let { folderId } = params;
 
-    getFileInSharedFolder(folderId)
+    getFilesInSharedFolder(folderId)
         .then((content) => {
-            svc.events.send('onFileListComplete', {
+            svc.events.send('onFilesListComplete', {
                 content: content,
                 ok: true,
             }, id);
         })
         .catch(err => {
-            svc.events.send('onFileListComplete', {
+            svc.events.send('onFilesListComplete', {
                 ok: false,
                 error: err.message,
             }, id);

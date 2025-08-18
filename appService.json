@@ -38,19 +38,19 @@
     "stores": [],
     "events": [
         {
-            "label": "On file list completed",
-            "name": "onFileListComplete",
-            "description": "Callback event for when the file list has been retrieved"
+            "label": "On files list completed",
+            "name": "onFilesListComplete",
+            "description": "Callback event for when the files list has been retrieved"
         }
     ],
     "functions": [
         {
             "label": "get shared folder files list",
-            "name": "getFileInSharedFolder",
+            "name": "getFilesInSharedFolder",
             "description": "The service receives a folder ID and returns the list of files in the shared folder",
             "callbacks": [
                 {
-                    "name": "onFileListComplete",
+                    "name": "onFilesListComplete",
                     "maxWaitingTime": 120000,
                     "maxExpectedResponses": 1
                 }

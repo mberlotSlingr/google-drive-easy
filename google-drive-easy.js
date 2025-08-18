@@ -21,7 +21,8 @@ async function authenticate() {
 }
 
 // List files in Google Drive
-async function getFileInSharedFolder(folderId) {
+async function getFilesInSharedFolder(folderId) {
+    console.log('Fetching files from shared folder:', folderId);
   try {
     await authenticate();
     let params = {
@@ -67,6 +68,6 @@ async function downloadFile(fileId, fileName) {
 }
 
 module.exports = {
-    getFileInSharedFolder,
+    getFilesInSharedFolder,
     downloadFile,
 };
