@@ -38,14 +38,14 @@
 "stores": [],
 "events": [
     {
-        "label": "On files list completed",
-        "name": "onFilesListComplete",
-        "description": "Callback event for when the files list has been retrieved"
-    },
-    {
         "label": "On File Download Complete",
         "name": "onFileDownloadComplete",
         "description": "Callback event for when the file has been downloaded"
+    },
+    {
+        "label": "On Files List Complete",
+        "name": "onFilesListComplete",
+        "description": "Callback event for when the files list has been retrieved"
     }
 ],
 "functions": [

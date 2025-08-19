@@ -1,5 +1,5 @@
 const svc = require('@slingr/slingr-services');
-const { getFilesInSharedFolder, downloadFile } = require('./google-drive-easy.js');
+const { downloadFile } = require('./google-drive-easy.js');
 
 svc.hooks.onSvcStart = () => {
     svc.logger.info('Google Drive Easy Service has started');

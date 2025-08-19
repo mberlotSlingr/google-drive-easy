@@ -1,5 +1,6 @@
 const { google } = require('googleapis');
 const fs = require('fs');
+const svc = require('@slingr/slingr-services');
 require('dotenv').config();
 
 const drive = google.drive('v3');
@@ -55,13 +56,11 @@ async function downloadFile(fileId, fileName) {
       fileId: fileId,
       alt: 'media',
     }, { responseType: 'stream' });
+    
 
-    res.data
-      .on('end', async () => {
-        let fileInfo = await svc.files.upload(fileName, res.data);
-        return fileInfo;
-    })
-      .on('error', err => console.error('Error downloading file', err));
+    let fileInfo = await svc.files.upload(fileName, res.data);
+    return {"file": fileInfo, "id": fileId, "name": fileName};
+
   } catch (err) {
     console.error('Download error:', err);
   }
