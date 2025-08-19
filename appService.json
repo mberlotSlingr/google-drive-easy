@@ -74,5 +74,21 @@
         ]
     }
 ],
-"configuration":[]
+"configuration":[
+    {
+      "label": "GOOGLE_PROJECT_ID",
+      "name": "GOOGLE_PROJECT_ID",
+      "type": "text"
+    },
+    {
+      "label": "GOOGLE_CLIENT_EMAIL",
+      "name": "GOOGLE_CLIENT_EMAIL",
+      "type": "text"
+    },
+    {
+      "label": "GOOGLE_PRIVATE_KEY",
+      "name": "GOOGLE_PRIVATE_KEY",
+      "type": "password"
+    }
+]
 }
