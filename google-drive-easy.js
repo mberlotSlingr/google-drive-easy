@@ -48,18 +48,23 @@ async function getFilesInSharedFolder(folderId) {
   }
 }
 
-async function downloadFile(fileId, fileName) {
+async function downloadFile(fileList) {
   try {
     await authenticate();
+    let filesUploaded = []
 
-    const res = await drive.files.get({
-      fileId: fileId,
-      alt: 'media',
-    }, { responseType: 'stream' });
-    
+    await Promise.all(fileList.map(async f =>{
+      const res = await drive.files.get({
+        fileId: f.id,
+        alt: 'media',
+      }, { responseType: 'stream' });
+      
 
-    let fileInfo = await svc.files.upload(fileName, res.data);
-    return {"file": fileInfo, "id": fileId, "name": fileName};
+      let fileInfo = await svc.files.upload(f.name, res.data);
+      filesUploaded.push({"file": fileInfo, "id": f.id, "name": f.name});
+    }))
+
+    return filesUploaded;
 
   } catch (err) {
     console.error('Download error:', err);
