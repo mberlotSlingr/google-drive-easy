@@ -1,7 +1,6 @@
 const { google } = require('googleapis');
 const fs = require('fs');
 const svc = require('@slingr/slingr-services');
-const config = require('@slingr/slingr-s')
 require('dotenv').config();
 
 const drive = google.drive('v3');
@@ -24,7 +23,7 @@ async function authenticate() {
 
 // List files in Google Drive
 async function getFilesInSharedFolder(folderId) {
-  svc.logger.info('Fetching files from shared folder:', folderId);
+  svc.appLogger.info('Fetching files from shared folder: ' + folderId);
   try {
     await authenticate();
     let params = {
@@ -45,7 +44,7 @@ async function getFilesInSharedFolder(folderId) {
     }
     return content;
   } catch (err) {
-    svc.logger.info('The API returned an error:', err);
+    svc.appLogger.info('The API returned an error:', err);
     throw err;
   }
 }
@@ -69,7 +68,7 @@ async function downloadFile(fileList) {
     return filesUploaded;
 
   } catch (err) {
-    svc.logger.info('Download error:', err);
+    svc.appLogger.info('Download error:', err);
     throw err;
   }
 }
