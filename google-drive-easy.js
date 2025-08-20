@@ -8,10 +8,10 @@ const drive = google.drive('v3');
 async function authenticate() {
   const auth = new google.auth.GoogleAuth({
     credentials:{
-      private_key: process.env.GOOGLE_PRIVATE_KEY.replace(/\\n/g, '\n'),
-      client_email: process.env.GOOGLE_CLIENT_EMAIL,
+      private_key: config.get("GOOGLE_PRIVATE_KEY").replace(/\\n/g, '\n'),
+      client_email: config.get("GOOGLE_CLIENT_EMAIL"),
     },
-    projectId: process.env.GOOGLE_PROJECT_ID,
+    projectId: config.get("GOOGLE_PROJECT_ID"),
     // Scopes define the level of access to the API
     scopes: ['https://www.googleapis.com/auth/drive'],
   });
