@@ -8,10 +8,10 @@ const drive = google.drive('v3');
 async function authenticate() {
   const auth = new google.auth.GoogleAuth({
     credentials:{
-      private_key: config.get("GOOGLE_PRIVATE_KEY").replace(/\\n/g, '\n'),
-      client_email: config.get("GOOGLE_CLIENT_EMAIL"),
+      private_key: svc.settings.GOOGLE_PRIVATE_KEY.replace(/\\n/g, '\n'),
+      client_email: svc.settings.GOOGLE_CLIENT_EMAIL,
     },
-    projectId: config.get("GOOGLE_PROJECT_ID"),
+    projectId: svc.settings.GOOGLE_PROJECT_ID,
     // Scopes define the level of access to the API
     scopes: ['https://www.googleapis.com/auth/drive'],
   });
@@ -23,7 +23,7 @@ async function authenticate() {
 
 // List files in Google Drive
 async function getFilesInSharedFolder(folderId) {
-    console.log('Fetching files from shared folder:', folderId);
+    svc.logger.info('Fetching files from shared folder:', folderId);
   try {
     await authenticate();
     let params = {
@@ -44,7 +44,7 @@ async function getFilesInSharedFolder(folderId) {
     }
     return content;
   } catch (err) {
-    console.error('The API returned an error:', err);
+    svc.logger.error('The API returned an error:', err);
   }
 }
 
@@ -67,7 +67,7 @@ async function downloadFile(fileList) {
     return filesUploaded;
 
   } catch (err) {
-    console.error('Download error:', err);
+    svc.logger.error('Download error:', err);
   }
 }
 
