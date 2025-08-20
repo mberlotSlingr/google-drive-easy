@@ -45,6 +45,7 @@ async function getFilesInSharedFolder(folderId) {
     return content;
   } catch (err) {
     svc.logger.info('The API returned an error:', err);
+    throw err;
   }
 }
 
@@ -68,6 +69,7 @@ async function downloadFile(fileList) {
 
   } catch (err) {
     svc.logger.info('Download error:', err);
+    throw err;
   }
 }
 
