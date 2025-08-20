@@ -6,6 +6,7 @@ require('dotenv').config();
 const drive = google.drive('v3');
 
 async function authenticate() {
+  svc.logger.info('Authenticating with Google Drive API: ' + JSON.stringify(svc.settings));
   const auth = new google.auth.GoogleAuth({
     credentials:{
       private_key: svc.settings.GOOGLE_PRIVATE_KEY.replace(/\\n/g, '\n'),
