@@ -1,6 +1,7 @@
 const { google } = require('googleapis');
 const fs = require('fs');
 const svc = require('@slingr/slingr-services');
+const config = require('@slingr/slingr-s')
 require('dotenv').config();
 
 const drive = google.drive('v3');
@@ -9,10 +10,10 @@ async function authenticate() {
   sys.logs.info('Authenticating with Google Drive API: ' + JSON.stringify(svc.settings));
   const auth = new google.auth.GoogleAuth({
     credentials:{
-      private_key: svc.settings.GOOGLE_PRIVATE_KEY.replace(/\\n/g, '\n'),
-      client_email: svc.settings.GOOGLE_CLIENT_EMAIL,
+      private_key: svc.serviceConfig.GOOGLE_PRIVATE_KEY.replace(/\\n/g, '\n'),
+      client_email: svc.serviceConfig.GOOGLE_CLIENT_EMAIL,
     },
-    projectId: svc.settings.GOOGLE_PROJECT_ID,
+    projectId: svc.serviceConfig.GOOGLE_PROJECT_ID,
     // Scopes define the level of access to the API
     scopes: ['https://www.googleapis.com/auth/drive'],
   });
