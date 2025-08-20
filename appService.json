@@ -2,7 +2,6 @@
 "label": "googledriveeasy",
 "name": "googledriveeasy",
 "apiVersion": "v1",
-"internal": false,
 "configurationType": "GLOBAL",
 "deployment": {
     "jsService": true,
