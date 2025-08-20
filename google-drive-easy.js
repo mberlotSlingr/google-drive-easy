@@ -7,7 +7,6 @@ require('dotenv').config();
 const drive = google.drive('v3');
 
 async function authenticate() {
-  sys.logs.info('Authenticating with Google Drive API: ' + JSON.stringify(svc.settings));
   const auth = new google.auth.GoogleAuth({
     credentials:{
       private_key: svc.serviceConfig.GOOGLE_PRIVATE_KEY.replace(/\\n/g, '\n'),
@@ -25,7 +24,7 @@ async function authenticate() {
 
 // List files in Google Drive
 async function getFilesInSharedFolder(folderId) {
-  sys.logs.info('Fetching files from shared folder:', folderId);
+  svc.logger.info('Fetching files from shared folder:', folderId);
   try {
     await authenticate();
     let params = {
@@ -46,7 +45,7 @@ async function getFilesInSharedFolder(folderId) {
     }
     return content;
   } catch (err) {
-    sys.logs.info('The API returned an error:', err);
+    svc.logger.info('The API returned an error:', err);
     throw err;
   }
 }
@@ -70,7 +69,7 @@ async function downloadFile(fileList) {
     return filesUploaded;
 
   } catch (err) {
-    sys.logs.info('Download error:', err);
+    svc.logger.info('Download error:', err);
     throw err;
   }
 }
