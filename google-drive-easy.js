@@ -43,6 +43,7 @@ async function getFilesInSharedFolder(folderId) {
       let files = res.data.files;
       if (files.length) {
         content = content.concat(files);
+        pageToken = res.data.nextPageToken;
       }
     } while (pageToken)
 

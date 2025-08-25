@@ -21,6 +21,7 @@ pids
 # Environment variables
 .env
 .env.*
+.priv
 
 # OS files
 .DS_Store
