@@ -7,7 +7,7 @@ const drive = google.drive('v3');
 
 async function authenticate() {
   const auth = new google.auth.GoogleAuth({
-    credentials:{
+    credentials: {
       private_key: config.get("GOOGLE_PRIVATE_KEY").replace(/\\n/g, '\n'),
       client_email: config.get("GOOGLE_CLIENT_EMAIL"),
     },
@@ -15,7 +15,7 @@ async function authenticate() {
     // Scopes define the level of access to the API
     scopes: ['https://www.googleapis.com/auth/drive'],
   });
-  
+
   const authClient = await auth.getClient();
   google.options({ auth: authClient });
   return authClient;
@@ -23,25 +23,28 @@ async function authenticate() {
 
 // List files in Google Drive
 async function getFilesInSharedFolder(folderId) {
-    console.log('Fetching files from shared folder:', folderId);
+  console.log('Fetching files from shared folder:', folderId);
   try {
     await authenticate();
-    let params = {
-      pageSize: 10,
-      fields: 'nextPageToken, files(id, name)',
-    };
-    if(folderId){
-        params.q = `'${folderId}' in parents`;
-    }
-    const res = await drive.files.list();
-
     const content = [];
-    const files = res.data.files;
-    if (files.length) {
-      files.forEach((file) => {
-        content.push({ id: file.id, name: file.name });
-      });
-    }
+
+    do {
+      let params = {
+        pageSize: 1000,
+        fields: 'nextPageToken, files(id, name)',
+        pageToken: pageToken
+      };
+      if (folderId) {
+        params.q = `'${folderId}' in parents`;
+      }
+
+      const res = await drive.files.list();
+
+      if (files.length) {
+        content = content.concat(res.data.files);
+      }
+    } while (pageToken)
+
     return content;
   } catch (err) {
     console.error('The API returned an error:', err);
@@ -53,15 +56,15 @@ async function downloadFile(fileList) {
     await authenticate();
     let filesUploaded = []
 
-    await Promise.all(fileList.map(async f =>{
+    await Promise.all(fileList.map(async f => {
       const res = await drive.files.get({
         fileId: f.id,
         alt: 'media',
       }, { responseType: 'stream' });
-      
+
 
       let fileInfo = await svc.files.upload(f.name, res.data);
-      filesUploaded.push({"file": fileInfo, "id": f.id, "name": f.name});
+      filesUploaded.push({ "file": fileInfo, "id": f.id, "name": f.name });
     }))
 
     return filesUploaded;
@@ -72,6 +75,6 @@ async function downloadFile(fileList) {
 }
 
 module.exports = {
-    getFilesInSharedFolder,
-    downloadFile,
+  getFilesInSharedFolder,
+  downloadFile,
 };
