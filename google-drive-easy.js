@@ -26,7 +26,8 @@ async function getFilesInSharedFolder(folderId) {
   console.log('Fetching files from shared folder:', folderId);
   try {
     await authenticate();
-    const content = [];
+    let content = [];
+    let pageToken = null;
 
     do {
       let params = {
@@ -38,10 +39,10 @@ async function getFilesInSharedFolder(folderId) {
         params.q = `'${folderId}' in parents`;
       }
 
-      const res = await drive.files.list();
-
+      let res = await drive.files.list(params);
+      let files = res.data.files;
       if (files.length) {
-        content = content.concat(res.data.files);
+        content = content.concat(files);
       }
     } while (pageToken)
 
