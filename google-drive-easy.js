@@ -50,6 +50,7 @@ async function getFilesInSharedFolder(folderId) {
     return content;
   } catch (err) {
     console.error('The API returned an error:', err);
+    throw err;
   }
 }
 
